@@ -6,10 +6,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory System - TypeScript</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="app.js"></script>
+    <link rel="stylesheet" href="style.css">  <!-- Introduce style files -->
+    <script type="text/javascript" src="app.js"></script>  <!-- Introduce the core logic script -->
 </head>
 <body>
+  <!-- Top title bar -->
+  <div class="top-header">
+    <h1 class="main-title">Inventory Management System</h1>
+  </div>
+  <!-- Main container (Sidebar + Content)  -->
+  <div class="main-container">
+    <!-- Sidebar (filter menu) -->
+    <div class="sidebar">
+      <ul class="sidebar-menu">
+         <!--  Menu Title (Expand/Contract) -->
+        <li class="menu-item" id="menuToggle">
+          Inventory Management
+          <span class="sub-icon">▼</span>
+        </li>
+        <!-- Filter Submenu -->
+        <ul class="sub-menu" id="subMenu">
+          <li class="sub-item active" data-filter="all">All Items</li>
+          <li class="sub-item" data-filter="popular">Popular Items</li>
+          <li class="sub-item" data-filter="Electronics">Electronics</li>
+          <li class="sub-item" data-filter="Furniture">Furniture</li>
+          <li class="sub-item" data-filter="Clothing">Clothing</li>
+          <li class="sub-item" data-filter="Tools">Tools</li>
+          <li class="sub-item" data-filter="Miscellaneous">Miscellaneous</li>
+        </ul>
+      </ul>
+    </div>
+    <!-- Main Content Area -->
+    <div class="content">
+      <!-- Page Message Prompt Box-->
+      <div id="messageBox" class="msg-box"></div>
+       <!-- Operation Bar (Add/Batch Delete/Search) -->
+      <div class="action-bar">
+        <div class="action-left">
+          <button id="openAddModal" class="btn-add">Add New Item</button>
+          <button id="batchDeleteBtn" class="btn-batch">Batch Delete</button>
+        </div>
+        <div class="action-right">
+          <input type="text" id="searchInput" placeholder="Search by name">
+          <button id="searchBtn">Search</button>
+        </div>
+      </div>
+      <!-- Table container  -->
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Supplier</th>
+              <th>Stock Status</th>
+              <th>Popular</th>
+              <th>Comment</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <!-- Main body of the table -->
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New/Edit Window -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <!-- Pop-up window header (title + close button) -->
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Item</h2>
+        <span id="closeModal" class="close">×</span>
+      </div>
+       <!--  Item Form -->
+      <form id="itemForm">
+        <input type="hidden" id="editId">
+         <!-- Item ID -->
+        <div class="form-row">
+          <label>Item ID *</label>
+          <input type="text" id="itemId" required>
+        </div>
+        <!-- Item Name -->
+        <div class="form-row">
+          <label>Item Name *</label>
+          <input type="text" id="itemName" required>
+        </div>
+        <!-- Item Categories -->
+        <div class="form-row">
+          <label>Category *</label>
+          <select id="category" required>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Tools">Tools</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+          </select>
+        </div>
+        <!-- Inventory Quantity -->
+        <div class="form-row">
+          <label>Quantity *</label>
+          <input type="number" id="quantity" min="0" required>
+        </div>
+        <!-- Item Price -->
+        <div class="form-row">
+          <label>Price *</label>
+          <input type="number" step="0.01" min="0" id="price" required>
+        </div>
+        <!-- Supplier -->
+        <div class="form-row">
+          <label>Supplier *</label>
+          <input type="text" id="supplier" required>
+        </div>
+        <!-- Inventory status -->
+        <div class="form-row">
+          <label>Stock Status *</label>
+          <select id="stockStatus" required>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+        </div>
+        <!-- Is it popular? -->
+        <div class="form-row">
+          <label>Popular Item *</label>
+          <select id="popularItem" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+         <!-- Item Comment -->
+        <div class="form-row">
+          <label>Comment</label>
+          <textarea id="comment" rows="3"></textarea>
+        </div>
+        <!-- Form Button Group -->
+        <div class="btn-group">
+          <button type="submit" id="saveBtn">Save</button>
+          <button type="button" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirmation for Deletion Dialog -->
+  <div id="modalConfirm" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm</h2>
+      </div>
+      <div class="form-row">
+        <p id="confirmText"></p>
+      </div>
+      <div class="btn-group">
+        <button id="confirmOk">OK</button>
+        <button id="confirmCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
