@@ -199,10 +199,11 @@ function bindEvents() {
         };
         //Determine whether it is an editing or adding operation
         if (editId) {
-            //Editing operation: Locate the corresponding product with the specified ID and update it.
+            // Editor: First by name, then by ID if names are the same.
             var index = -1;
             for (var i = 0; i < inventoryData.length; i++) {
-                if (inventoryData[i].id === editId) {
+                var curr = inventoryData[i];
+                if (curr.name === nameInput && curr.id === editId) {
                     index = i;
                     break;
                 }
@@ -213,19 +214,12 @@ function bindEvents() {
             }
         }
         else {
-            //Add operation: Check if the ID already exists
-            var exists = false;
-            for (var i = 0; i < inventoryData.length; i++) {
-                if (inventoryData[i].id === item.id) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (exists) {
-                showMessage("Item ID already exists!", "error");
+            // Add: Allow the same name, but prohibit duplicate IDs
+            var idExists = inventoryData.some(function (curr) { return curr.id === item.id; });
+            if (idExists) {
+                showMessage("ID already exists!", "error");
                 return;
             }
-            //Add new item to the array
             inventoryData.push(item);
             showMessage("Item added successfully!", "success");
         }
@@ -237,11 +231,13 @@ function bindEvents() {
         var target = e.target;
         if (target.classList.contains("edit-btn")) {
             var id = target.getAttribute("data-id") || ""; //Obtain the ID of the product to be edited
+            var name_1 = target.getAttribute("data-name") || "";
             var foundItem = void 0;
-            //Search for the corresponding product by its ID
+            //First, search by name. If there is a match, then use the ID.
             for (var i = 0; i < inventoryData.length; i++) {
-                if (inventoryData[i].id === id) {
-                    foundItem = inventoryData[i];
+                var currentItem = inventoryData[i];
+                if (currentItem.name === name_1 && currentItem.id === id) {
+                    foundItem = currentItem;
                     break;
                 }
             }
@@ -267,11 +263,13 @@ function bindEvents() {
         var target = e.target;
         if (target.classList.contains("del-btn")) {
             var id_1 = target.getAttribute("data-id") || ""; //Obtain the ID of the item to be deleted
+            var name_2 = target.getAttribute("data-name") || "";
             var itemName = "";
             //Search for the item name (for confirming the prompt)
             for (var i = 0; i < inventoryData.length; i++) {
-                if (inventoryData[i].id === id_1) {
-                    itemName = inventoryData[i].name;
+                var currentItem = inventoryData[i];
+                if (currentItem.name === name_2 && currentItem.id === id_1) {
+                    itemName = currentItem.name;
                     break;
                 }
             }
@@ -280,8 +278,9 @@ function bindEvents() {
                 var newData = [];
                 //Filter out the goods to be deleted
                 for (var i = 0; i < inventoryData.length; i++) {
-                    if (inventoryData[i].id !== id_1) {
-                        newData.push(inventoryData[i]);
+                    var currentItem = inventoryData[i];
+                    if (!(currentItem.name === name_2 && currentItem.id === id_1)) {
+                        newData.push(currentItem);
                     }
                 }
                 inventoryData = newData;
@@ -298,27 +297,29 @@ function bindEvents() {
             return;
         }
         //Collect the selected item IDs
-        var ids = [];
+        var selectedItems = [];
         for (var i = 0; i < checkboxes.length; i++) {
             var cb = checkboxes[i];
             var id = cb.getAttribute("data-id") || "";
-            ids.push(id);
+            var name_3 = cb.getAttribute("data-name") || "";
+            selectedItems.push({ name: name_3, id: id });
         }
         //Confirm batch deletion
         openConfirmModal("Are you sure you want to delete ".concat(checkboxes.length, " items?"), function () {
             var newData = [];
             //Filter out the selected items
             for (var i = 0; i < inventoryData.length; i++) {
-                var itemId = inventoryData[i].id;
-                var isInIds = false;
-                for (var j = 0; j < ids.length; j++) {
-                    if (ids[j] === itemId) {
-                        isInIds = true;
+                var currentItem = inventoryData[i];
+                var isSelected = false;
+                for (var j = 0; j < selectedItems.length; j++) {
+                    var selItem = selectedItems[j];
+                    if (currentItem.name === selItem.name && currentItem.id === selItem.id) {
+                        isSelected = true;
                         break;
                     }
                 }
-                if (!isInIds) {
-                    newData.push(inventoryData[i]);
+                if (!isSelected) {
+                    newData.push(currentItem);
                 }
             }
             inventoryData = newData;
