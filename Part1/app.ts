@@ -228,35 +228,29 @@ function bindEvents(): void {
   };
   //Determine whether it is an editing or adding operation
   if (editId) {
-    //Editing operation: Locate the corresponding product with the specified ID and update it.
-    let index = -1;
-    for (let i = 0; i < inventoryData.length; i++) {
-      if (inventoryData[i].id === editId) {
-        index = i;
-        break;
-      }
+  // Editor: First by name, then by ID if names are the same.
+  let index = -1;
+  for (let i = 0; i < inventoryData.length; i++) {
+    const curr = inventoryData[i];
+    if (curr.name === nameInput && curr.id === editId) {
+      index = i;
+      break;
     }
-    if (index !== -1) {
-      inventoryData[index] = item;
-      showMessage("Item updated successfully!", "success");
-    }
-  } else {
-    //Add operation: Check if the ID already exists
-    let exists = false;
-    for (let i = 0; i < inventoryData.length; i++) {
-      if (inventoryData[i].id === item.id) {
-        exists = true;
-        break;
-      }
-    }
-    if (exists) {
-      showMessage("Item ID already exists!", "error");
-      return;
-    }
-    //Add new item to the array
-    inventoryData.push(item);
-    showMessage("Item added successfully!", "success");
   }
+  if (index !== -1) {
+    inventoryData[index] = item;
+    showMessage("Item updated successfully!", "success");
+  }
+} else {
+  // Add: Allow the same name, but prohibit duplicate IDs
+  const idExists = inventoryData.some(curr => curr.id === item.id);
+  if (idExists) {
+    showMessage("ID already exists!", "error");
+    return;
+  }
+  inventoryData.push(item);
+  showMessage("Item added successfully!", "success");
+}
   closeModal();
   renderTable();
 });
@@ -265,11 +259,13 @@ function bindEvents(): void {
     const target = e.target as HTMLElement;
     if (target.classList.contains("edit-btn")) {
       const id = target.getAttribute("data-id") || "";  //Obtain the ID of the product to be edited
+      const name = target.getAttribute("data-name") || "";
       let foundItem: InventoryItem | undefined;
-      //Search for the corresponding product by its ID
+      //First, search by name. If there is a match, then use the ID.
       for (let i = 0; i < inventoryData.length; i++) {
-        if (inventoryData[i].id === id) {
-          foundItem = inventoryData[i];
+        const currentItem = inventoryData[i];
+        if (currentItem.name === name && currentItem.id === id) {
+          foundItem = currentItem;
           break;
         }
       }
@@ -295,11 +291,13 @@ function bindEvents(): void {
     const target = e.target as HTMLElement;
     if (target.classList.contains("del-btn")) {
       const id = target.getAttribute("data-id") || "";  //Obtain the ID of the item to be deleted
+      const name = target.getAttribute("data-name") || "";
       let itemName = "";
       //Search for the item name (for confirming the prompt)
       for (let i = 0; i < inventoryData.length; i++) {
-        if (inventoryData[i].id === id) {
-          itemName = inventoryData[i].name;
+        const currentItem = inventoryData[i];
+        if (currentItem.name === name && currentItem.id === id) {
+          itemName = currentItem.name;
           break;
         }
       }
@@ -308,8 +306,9 @@ function bindEvents(): void {
         let newData: InventoryItem[] = [];
         //Filter out the goods to be deleted
         for (let i = 0; i < inventoryData.length; i++) {
-          if (inventoryData[i].id !== id) {
-            newData.push(inventoryData[i]);
+          const currentItem = inventoryData[i];
+          if (!(currentItem.name === name && currentItem.id === id)) {
+            newData.push(currentItem);
           }
         }
         inventoryData = newData;
@@ -326,27 +325,29 @@ function bindEvents(): void {
       return;
     }
     //Collect the selected item IDs
-    const ids: string[] = [];
+    const selectedItems: { name: string; id: string }[] = [];
     for (let i = 0; i < checkboxes.length; i++) {
       const cb = checkboxes[i] as HTMLElement;
       const id = cb.getAttribute("data-id") || "";
-      ids.push(id);
+      const name = cb.getAttribute("data-name") || "";
+      selectedItems.push({ name, id });
     }
     //Confirm batch deletion
     openConfirmModal(`Are you sure you want to delete ${checkboxes.length} items?`, () => {
       let newData: InventoryItem[] = [];
       //Filter out the selected items
       for (let i = 0; i < inventoryData.length; i++) {
-        const itemId = inventoryData[i].id;
-        let isInIds = false;
-        for (let j = 0; j < ids.length; j++) {
-          if (ids[j] === itemId) {
-            isInIds = true;
+        const currentItem = inventoryData[i];
+        let isSelected = false;
+        for (let j = 0; j < selectedItems.length; j++) {
+          const selItem = selectedItems[j];
+          if (currentItem.name === selItem.name && currentItem.id === selItem.id) {
+            isSelected = true;
             break;
           }
         }
-        if (!isInIds) {
-          newData.push(inventoryData[i]);
+        if (!isSelected) {
+          newData.push(currentItem);
         }
       }
       inventoryData = newData;
