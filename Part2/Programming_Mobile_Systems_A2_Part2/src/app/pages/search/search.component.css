@@ -1,10 +1,11 @@
+/*Page Title Style*/
 .page-title {
   font-size: 24px;
   color: #001529;
   margin-bottom: 1.5rem;
 }
 
-/* 分行布局 */
+/* General style for filtering rows */
 .search-row {
   margin-bottom: 1rem;
   display: flex;
@@ -12,11 +13,12 @@
   flex-wrap: wrap;
 }
 
+/*Name row style*/
 .name-row {
   width: 100%;
 }
 
-/* 扩大输入框/下拉框 */
+/* General style for input boxes/drop-down boxes */
 .large-input, .large-select {
   padding: 0.8rem;
   font-size: 15px;
@@ -25,11 +27,12 @@
   min-width: 180px;
 }
 
+/*Individual style of the drop-down box*/
 .large-select {
   min-width: 200px;
 }
 
-/* 按钮 */
+/* General style of buttons */
 .search-btn, .reset-btn {
   padding: 0.8rem 1.4rem;
   border: none;
@@ -40,7 +43,7 @@
 .search-btn { background: #1890ff; color: white; }
 .reset-btn { background: #001529; color: white; }
 
-/* 无结果提示 */
+/* Error message box style */
 .no-result {
   color: #ff4d4f;
   font-size: 16px;
@@ -50,27 +53,30 @@
   border-radius: 6px;
 }
 
-/* 结果表格（同Inventory样式） */
+/* Result table container style */
 .table-container {
   margin-top: 1.5rem;
   overflow-x: auto;
 }
+/*Result table style*/
 .result-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
 }
+/*General style of table cells*/
 .result-table th, .result-table td {
   border: 1px solid #ddd;
   padding: 0.9rem;
   text-align: left;
 }
+/*Table header style*/
 .result-table th {
   background: #a4adb7;
   color: white;
 }
 
-/* 点击行效果 */
+/* Clickable row style */
 .clickable-row {
   cursor: pointer;
 }
