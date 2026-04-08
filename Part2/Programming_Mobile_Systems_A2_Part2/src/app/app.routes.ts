@@ -1,3 +1,7 @@
+/**Student Name: Zexu Xin
+*Student Number: 24832928
+*Programming Mobile Systems A2 Part2
+*/
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { InventoryManagementComponent } from './pages/inventory-management/inventory-management.component';

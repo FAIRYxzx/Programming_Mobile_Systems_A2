@@ -1,3 +1,7 @@
+/**Student Name: Zexu Xin
+*Student Number: 24832928
+*Programming Mobile Systems A2 Part2
+*/
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
