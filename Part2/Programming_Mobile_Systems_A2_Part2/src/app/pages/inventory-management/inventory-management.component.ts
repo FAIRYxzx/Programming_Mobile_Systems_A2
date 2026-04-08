@@ -48,6 +48,21 @@ export class InventoryManagementComponent implements OnInit {
     this.items = this.service.getItems();  //Obtain the list of goods from the service
     this.totalItems = this.items.length;
     this.updatePagination();
+    //Search page redirection positioning
+    const target = localStorage.getItem('scrollToItem');
+    if (target) {
+      const item = JSON.parse(target);
+      localStorage.removeItem('scrollToItem');
+    
+      setTimeout(() => {
+        const el = document.getElementById(`item-${item.id}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.backgroundColor = '#fff2cc';
+          setTimeout(() => el.style.backgroundColor = '', 2000);
+        }
+      }, 300);
+    }
   }
 
   /**
