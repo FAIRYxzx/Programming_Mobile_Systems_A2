@@ -147,7 +147,7 @@ function renderTable(): void {
     const tr = document.createElement("tr");  //Create row elements
     //Concatenate the cell contents within the row
     tr.innerHTML = `
-      <td><input type="checkbox" class="item-checkbox" data-id="${item.id}" /></td>
+      <td><input type="checkbox" class="item-checkbox" data-id="${item.id}" data-name="${item.name}" /></td>
       <td>${item.id}</td>
       <td>${item.name}</td>
       <td>${item.category}</td>
@@ -158,8 +158,8 @@ function renderTable(): void {
       <td>${item.popular}</td>
       <td title="${item.comment}">${item.comment.substring(0, 10)}${item.comment.length > 10 ? '...' : ''}</td>
       <td>
-        <span class="edit-btn" data-id="${item.id}">Edit</span>
-        <span class="del-btn" data-id="${item.id}">Delete</span>
+        <span class="edit-btn" data-id="${item.id}" data-name="${item.name}">Edit</span>
+        <span class="del-btn" data-id="${item.id}" data-name="${item.name}">Delete</span>
       </td>
     `;
     tableBody.appendChild(tr);  //Add rows to the table
