@@ -233,4 +233,19 @@ export class InventoryService {
       return nameMatch && catMatch && stockMatch && popularMatch;
     });
   }
+
+  advancedSearchWithPrice(filters: any): InventoryManagement[] {
+  return this.inventoryData.filter(item => {
+    const nameMatch = !filters.name || item.name.toLowerCase().includes(filters.name.toLowerCase());
+    const catMatch = !filters.category || item.category === filters.category;
+    const stockMatch = !filters.stockStatus || item.stockStatus === filters.stockStatus;
+    const popularMatch = !filters.popular || item.popular === filters.popular;
+
+    const min = filters.minPrice ? parseFloat(filters.minPrice) : null;
+    const max = filters.maxPrice ? parseFloat(filters.maxPrice) : null;
+    const priceMatch = (!min || item.price >= min) && (!max || item.price <= max);
+
+    return nameMatch && catMatch && stockMatch && popularMatch && priceMatch;
+  });
+}
 }

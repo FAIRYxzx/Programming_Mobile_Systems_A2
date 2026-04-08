@@ -1,0 +1,79 @@
+.page-title {
+  font-size: 24px;
+  color: #001529;
+  margin-bottom: 1.5rem;
+}
+
+/* 分行布局 */
+.search-row {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.name-row {
+  width: 100%;
+}
+
+/* 扩大输入框/下拉框 */
+.large-input, .large-select {
+  padding: 0.8rem;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-width: 180px;
+}
+
+.large-select {
+  min-width: 200px;
+}
+
+/* 按钮 */
+.search-btn, .reset-btn {
+  padding: 0.8rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.search-btn { background: #1890ff; color: white; }
+.reset-btn { background: #001529; color: white; }
+
+/* 无结果提示 */
+.no-result {
+  color: #ff4d4f;
+  font-size: 16px;
+  margin: 1rem 0;
+  padding: 0.8rem;
+  background: #fff2f0;
+  border-radius: 6px;
+}
+
+/* 结果表格（同Inventory样式） */
+.table-container {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+.result-table th, .result-table td {
+  border: 1px solid #ddd;
+  padding: 0.9rem;
+  text-align: left;
+}
+.result-table th {
+  background: #a4adb7;
+  color: white;
+}
+
+/* 点击行效果 */
+.clickable-row {
+  cursor: pointer;
+}
+.clickable-row:hover {
+  background: #e6f7ff;
+}

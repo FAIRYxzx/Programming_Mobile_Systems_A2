@@ -1,0 +1,84 @@
+<h2 class="page-title">Search & Filter Inventory</h2>
+
+<!-- 名称单独一行 -->
+<div class="search-row name-row">
+  <input 
+    [(ngModel)]="filters.name" 
+    placeholder="Enter item name"
+    class="large-input"
+  >
+</div>
+
+<!-- 其他条件一行 -->
+<div class="search-row filter-row">
+  <select [(ngModel)]="filters.category" class="large-select">
+    <option value="">All Categories</option>
+    <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+  </select>
+
+  <select [(ngModel)]="filters.stockStatus" class="large-select">
+    <option value="">All Stock</option>
+    <option *ngFor="let s of stockList" [value]="s">{{s}}</option>
+  </select>
+
+  <select [(ngModel)]="filters.popular" class="large-select">
+    <option value="">All Popular</option>
+    <option *ngFor="let p of popularList" [value]="p">{{p}}</option>
+  </select>
+
+  <input 
+    [(ngModel)]="filters.minPrice" 
+    type="number" 
+    placeholder="Min Price"
+    class="large-input"
+  >
+  <input 
+    [(ngModel)]="filters.maxPrice" 
+    type="number" 
+    placeholder="Max Price"
+    class="large-input"
+  >
+
+  <button (click)="doSearch()" class="search-btn">Search</button>
+  <button (click)="reset()" class="reset-btn">Reset</button>
+</div>
+
+<!-- 无结果提示 5秒消失 -->
+<div *ngIf="noResult" class="no-result">
+  No matching items found.
+</div>
+
+<!-- 结果表格（同Inventory样式，无复选框+无操作列） -->
+<div class="table-container" *ngIf="results.length > 0">
+  <h3>Results ({{results.length}})</h3>
+  <table class="result-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Popular</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr 
+        *ngFor="let item of results" 
+        (click)="goToItem(item)"
+        class="clickable-row"
+      >
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.category}}</td>
+        <td>{{item.quantity}}</td>
+        <td>${{item.price.toFixed(2)}}</td>
+        <td>{{item.stockStatus}}</td>
+        <td>{{item.popular}}</td>
+        <td>{{item.comment}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
