@@ -97,3 +97,6 @@
     </tbody>
   </table>
 </div>
+<div *ngIf="toastVisible" class="toast-center {{toastType}}">
+  {{ toastMessage }}
+</div>

@@ -1,7 +1,7 @@
 /**Student Name: Zexu Xin
-*Student Number: 24832928
-*Programming Mobile Systems A2 Part2
-*/
+ *Student Number: 24832928
+ *Programming Mobile Systems A2 Part2
+ */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,27 +21,22 @@ export class InventoryManagementComponent implements OnInit {
   modalVisible = false;
   modalTitle = 'Add New Item';
   currentItem: InventoryManagement = {} as InventoryManagement;
-
   // Global prompt box configuration
   toastMessage = '';
   toastType: 'success' | 'error' = 'success';
   toastVisible = false;
-
   // Sorting configuration
   sortKey: keyof InventoryManagement | null = null;
   sortOrder: 'asc' | 'desc' | null = null;
-
   // Delete pop-up configuration
   deleteModalVisible = false;
   deleteTargetItem: InventoryManagement | null = null;
   isBulkDelete = false;
-
   // Page configuration
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
   paginatedItems: InventoryManagement[] = [];
-
   //Hot product selection
   showOnlyPopular = false;
   originalItems: InventoryManagement[] = [];
@@ -57,6 +52,7 @@ export class InventoryManagementComponent implements OnInit {
     this.originalItems = [...this.items];
     this.totalItems = this.items.length;
     this.updatePagination();
+
     //Search page redirection positioning
     const target = localStorage.getItem('scrollToItem');
     if (target) {
@@ -107,10 +103,10 @@ export class InventoryManagementComponent implements OnInit {
    * @param event Keyboard event 
    */
   goToPageInput(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const page = parseInt(input.value, 10);
-  if (!isNaN(page) && page >= 1 && page <= this.totalPages()) {
-    this.goToPage(page);
+    const input = event.target as HTMLInputElement;
+    const page = parseInt(input.value, 10);
+    if (!isNaN(page) && page >= 1 && page <= this.totalPages()) {
+      this.goToPage(page);
     }
     input.value = '';
   }
@@ -163,28 +159,29 @@ export class InventoryManagementComponent implements OnInit {
     this.updatePagination();
   }
 
-/**
- * Obtain sorting icon
- * @param key Sorting field
- * @returns Ascending ↑ / Descending ↓ / Unsorted - 
- */
+  /**
+   * Obtain sorting icon
+   * @param key Sorting field
+   * @returns Ascending ↑ / Descending ↓ / Unsorted - 
+   */
   getSortIcon(key: keyof InventoryManagement): string {
     if (this.sortKey !== key) return '-';
     return this.sortOrder === 'asc' ? '↑' : '↓';
   }
 
-/**
- * Determine whether the specified field is the current sorting field
- * @param key Sorting field
- * @returns Whether sorting is activated 
- */
+  /**
+   * Determine whether the specified field is the current sorting field
+   * @param key Sorting field
+   * @returns Whether sorting is activated 
+   */
   isSortActive(key: keyof InventoryManagement): boolean {
-  return this.sortKey === key;
+    return this.sortKey === key;
   }
-/**
- * Open the "New/Edit" pop-up window
- * @param item The item to be edited (optional; if not provided, it will be a new item) 
- */
+
+  /**
+   * Open the "New/Edit" pop-up window
+   * @param item The item to be edited (optional; if not provided, it will be a new item) 
+   */
   openModal(item?: InventoryManagement): void {
     this.modalVisible = true;
     this.currentItem = item ? { ...item } : {} as InventoryManagement;
@@ -194,6 +191,7 @@ export class InventoryManagementComponent implements OnInit {
   closeModal(): void {
     this.modalVisible = false;
   }
+
   /**
    * Save the product (add/edit)
    * Verify mandatory fields, call the service interface, and display the operation result
@@ -204,6 +202,32 @@ export class InventoryManagementComponent implements OnInit {
       this.showToast('Name and ID are required!', 'error');
       return;
     }
+
+    // ========== 新增异常处理（保留你原有风格） ==========
+    // Complete required fields validation
+    if (!this.currentItem.category || !this.currentItem.supplier) {
+      this.showToast('Category and Supplier are required!', 'error');
+      return;
+    }
+    if (!this.currentItem.stockStatus || !this.currentItem.popular) {
+      this.showToast('Stock Status and Popular cannot be empty!', 'error');
+      return;
+    }
+
+    // Numeric validation for quantity (must be integer ≥ 0)
+    const qty = Number(this.currentItem.quantity);
+    if (isNaN(qty) || qty < 0 || !Number.isInteger(qty)) {
+      this.showToast('Quantity must be a positive integer!', 'error');
+      return;
+    }
+
+    // Numeric validation for price (must be > 0)
+    const price = Number(this.currentItem.price);
+    if (isNaN(price) || price <= 0) {
+      this.showToast('Price must be greater than 0!', 'error');
+      return;
+    }
+
     let success = false;
     // Add New Product
     if (this.modalTitle === 'Add New Item') {
@@ -286,17 +310,17 @@ export class InventoryManagementComponent implements OnInit {
   }
 
   // Switch to viewing only the popular products
-togglePopular(): void {
-  this.showOnlyPopular = !this.showOnlyPopular;
-  if (this.showOnlyPopular) {
-    // Show only the popular ones
-    this.items = this.originalItems.filter(i => i.popular === 'Yes');
-  } else {
-    // Restore completely
-    this.items = [...this.originalItems];
+  togglePopular(): void {
+    this.showOnlyPopular = !this.showOnlyPopular;
+    if (this.showOnlyPopular) {
+      // Show only the popular ones
+      this.items = this.originalItems.filter(i => i.popular === 'Yes');
+    } else {
+      // Restore completely
+      this.items = [...this.originalItems];
+    }
+    this.totalItems = this.items.length;
+    this.currentPage = 1;
+    this.updatePagination();
   }
-  this.totalItems = this.items.length;
-  this.currentPage = 1;
-  this.updatePagination();
-}
 }

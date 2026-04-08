@@ -1,7 +1,7 @@
 /**Student Name: Zexu Xin
-*Student Number: 24832928
-*Programming Mobile Systems A2 Part2
-*/
+ *Student Number: 24832928
+ *Programming Mobile Systems A2 Part2
+ */
 import { Injectable } from '@angular/core';
 import { InventoryManagement } from '../models/Inventory-Management';
 
@@ -13,7 +13,7 @@ import { InventoryManagement } from '../models/Inventory-Management';
 export class InventoryService {
   /**
    * Private inventory data storage array
-   * Store all inventory item information, with the type being "InventoryManagement" array
+   * Store all inventory item information, with the type being "Inventory-Management" array
    */
   private inventoryData: InventoryManagement[] = [
     {
@@ -145,7 +145,6 @@ export class InventoryService {
     // If the name or ID already exists, the addition fails.
     if (nameExists) return false;
     if (idExists) return false;
-
     //Verification successful. Add the new product to the inventory array.
     this.inventoryData.push(item);
     return true;
@@ -163,7 +162,6 @@ export class InventoryService {
       i.name === target.name && i.id === target.id
     );
     if (index === -1) return false;
-
     // Merge the original product information with the updated attributes to create a new object (avoid directly modifying the original object)
     this.inventoryData[index] = { ...this.inventoryData[index], ...updated };
     return true;
@@ -239,17 +237,20 @@ export class InventoryService {
   }
 
   advancedSearchWithPrice(filters: any): InventoryManagement[] {
-  return this.inventoryData.filter(item => {
-    const nameMatch = !filters.name || item.name.toLowerCase().includes(filters.name.toLowerCase());
-    const catMatch = !filters.category || item.category === filters.category;
-    const stockMatch = !filters.stockStatus || item.stockStatus === filters.stockStatus;
-    const popularMatch = !filters.popular || item.popular === filters.popular;
+    return this.inventoryData.filter(item => {
+      const nameMatch = !filters.name || item.name.toLowerCase().includes(filters.name.toLowerCase());
+      const catMatch = !filters.category || item.category === filters.category;
+      const stockMatch = !filters.stockStatus || item.stockStatus === filters.stockStatus;
+      const popularMatch = !filters.popular || item.popular === filters.popular;
 
-    const min = filters.minPrice ? parseFloat(filters.minPrice) : null;
-    const max = filters.maxPrice ? parseFloat(filters.maxPrice) : null;
-    const priceMatch = (!min || item.price >= min) && (!max || item.price <= max);
-
-    return nameMatch && catMatch && stockMatch && popularMatch && priceMatch;
-  });
-}
+      //Handling NaN exceptions prevention
+      const min = filters.minPrice ? parseFloat(filters.minPrice) : null;
+      const max = filters.maxPrice ? parseFloat(filters.maxPrice) : null;
+      const validMin = min !== null && !isNaN(min);
+      const validMax = max !== null && !isNaN(max);
+      const priceMatch = (!validMin || item.price >= min!) && (!validMax || item.price <= max!);
+      
+      return nameMatch && catMatch && stockMatch && popularMatch && priceMatch;
+    });
+  }
 }

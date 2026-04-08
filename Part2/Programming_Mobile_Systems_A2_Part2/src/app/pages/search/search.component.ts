@@ -1,7 +1,7 @@
 /**Student Name: Zexu Xin
-*Student Number: 24832928
-*Programming Mobile Systems A2 Part2
-*/
+ *Student Number: 24832928
+ *Programming Mobile Systems A2 Part2
+ */
 //Import components, modules, services, and models
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -32,6 +32,10 @@ export class SearchComponent implements OnInit {
   results: InventoryManagement[] = [];
   noResult = false;
 
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
+  toastVisible = false;
+
   //Static data list - Dropdown box options
   categories = ['Electronics','Furniture','Clothing','Tools','Miscellaneous'];
   stockList = ['In Stock','Low Stock','Out of Stock'];
@@ -52,6 +56,23 @@ export class SearchComponent implements OnInit {
    * The no-result prompt will automatically disappear after 3 seconds
    */
   doSearch(): void {
+    // Price anomaly handling
+    const min = this.filters.minPrice ? parseFloat(this.filters.minPrice) : null;
+    const max = this.filters.maxPrice ? parseFloat(this.filters.maxPrice) : null;
+
+    if (this.filters.minPrice && isNaN(min!)) {
+      this.showToast('Min Price must be a valid number!', 'error');
+      return;
+    }
+    if (this.filters.maxPrice && isNaN(max!)) {
+      this.showToast('Max Price must be a valid number!', 'error');
+      return;
+    }
+    if (min !== null && max !== null && min > max) {
+      this.showToast('Min Price cannot be greater than Max Price!', 'error');
+      return;
+    }
+
     //Invoke the search method of the inventory service to obtain the list of goods that meet the conditions
     this.results = this.service.advancedSearchWithPrice(this.filters);
     //Determine if there is no result and update the "noResult" flag
@@ -78,12 +99,19 @@ export class SearchComponent implements OnInit {
     this.noResult = false;
   }
 
- /**
-  * Click on the product row to navigate to the Inventory Management page and locate the specific product
-  * @param item The product object that was clicked
-  */
+  /**
+   * Click on the product row to navigate to the Inventory Management page and locate the specific product
+   * @param item The product object that was clicked
+   */
   goToItem(item: InventoryManagement): void {
     localStorage.setItem('scrollToItem', JSON.stringify(item));
     this.router.navigate(['/inventory']);
+  }
+
+  showToast(msg: string, type: 'success' | 'error'): void {
+    this.toastMessage = msg;
+    this.toastType = type;
+    this.toastVisible = true;
+    setTimeout(() => this.toastVisible = false, 2500);
   }
 }
