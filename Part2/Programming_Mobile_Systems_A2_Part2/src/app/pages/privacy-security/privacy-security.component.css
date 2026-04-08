@@ -1,0 +1,43 @@
+.privacy-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.main-title {
+  font-size: 26px;
+  color: #001529;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.content-block {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 16px;
+}
+
+.content-block h2 {
+  font-size: 18px;
+  color: #1890ff;
+  margin: 0 0 12px 0;
+}
+
+.content-block p,
+.content-block li {
+  color: #333;
+  font-size: 15px;
+}
+
+.content-block ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.content-block li {
+  margin-bottom: 6px;
+}
