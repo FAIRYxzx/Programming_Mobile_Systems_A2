@@ -1,0 +1,46 @@
+<!--Home page root container-->
+<div class="home-container">
+  <!--Display the main title and subtitle of the system-->
+    <div class="maintitle">
+    <h1>Inventory Management System</h1>
+    <p class="subtitle">An efficient inventory management system</p>
+  </div>
+
+  <!--System Usage Section-->
+  <div class="section">
+    <h2>System Purpose</h2>
+    <div class="purpose-cards">
+      <div class="card">
+        <h3>Manage Products</h3>
+        <p>Add, edit, delete and view all inventory items in one place.</p>
+      </div>
+      <div class="card">
+        <h3>Filter & Search</h3>
+        <p>Quickly find items by name, category, price, stock status and popularity.</p>
+      </div>
+      <div class="card">
+        <h3>Track Stock</h3>
+        <p>Monitor quantity, price and stock levels to keep business running smoothly.</p>
+      </div>
+    </div>
+  </div>
+
+    <!--Core Function Section-->
+  <div class="section">
+    <h2>Core Functions</h2>
+    <div class="features">
+      <div class="feature-item" *ngFor="let f of features">
+        <h4>{{ f.title }}</h4>
+        <p>{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!--Technical Framework Section-->
+  <div class="section tech-frame">
+    <h2>Framework</h2>
+    <div class="info">
+      <div><strong>Framework:</strong> {{ tech.framework }}</div>
+    </div>
+  </div>
+</div>

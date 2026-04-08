@@ -1,0 +1,98 @@
+/*Home page container style*/
+.home-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/*Headline Style*/
+.maintitle {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/*Main Title Style*/
+.maintitle h1 {
+  font-size: 36px;
+  color: #001529;
+  margin-bottom: 0.6rem;
+}
+
+/*Subtitle Style*/
+.subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+/*General block style - Container for each functional section*/
+.section {
+  margin-bottom: 2.5rem;
+}
+
+/*Block title style*/
+.section h2 {
+  font-size: 24px;
+  color: #001529;
+  margin-bottom: 1.2rem;
+  border-left: 4px solid #1890ff;
+  padding-left: 10px;
+}
+
+/*System Usage Card Holder*/
+.purpose-cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/*General card style*/
+.card {
+  flex: 1;
+  min-width: 280px;
+  background: white;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/*Card title style*/
+.card h3 {
+  color: #1890ff;
+  margin-bottom: 0.5rem;
+}
+
+/*Core Function List Container*/
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/*Style of core function list items*/
+.feature-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/*Function list item title*/
+.feature-item h4 {
+  color: #001529;
+  margin: 0 0 0.3rem;
+}
+
+.feature-item p {
+  margin: 0;
+  color: #555;
+}
+
+/*Technical framework block content container*/
+.tech-frame .info {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  line-height: 1.7;
+  font-size: 16px;
+}
