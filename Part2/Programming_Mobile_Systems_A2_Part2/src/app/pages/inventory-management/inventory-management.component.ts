@@ -38,6 +38,10 @@ export class InventoryManagementComponent implements OnInit {
   totalItems = 0;
   paginatedItems: InventoryManagement[] = [];
 
+  //Hot product selection
+  showOnlyPopular = false;
+  originalItems: InventoryManagement[] = [];
+
   //Inventory injection service
   constructor(private service: InventoryService) {}
 
@@ -46,6 +50,7 @@ export class InventoryManagementComponent implements OnInit {
    */
   ngOnInit(): void {
     this.items = this.service.getItems();  //Obtain the list of goods from the service
+    this.originalItems = [...this.items];
     this.totalItems = this.items.length;
     this.updatePagination();
     //Search page redirection positioning
@@ -275,4 +280,19 @@ export class InventoryManagementComponent implements OnInit {
     this.toastVisible = true;
     setTimeout(() => this.toastVisible = false, 2500);
   }
+
+  // Switch to viewing only the popular products
+togglePopular(): void {
+  this.showOnlyPopular = !this.showOnlyPopular;
+  if (this.showOnlyPopular) {
+    // Show only the popular ones
+    this.items = this.originalItems.filter(i => i.popular === 'Yes');
+  } else {
+    // Restore completely
+    this.items = [...this.originalItems];
+  }
+  this.totalItems = this.items.length;
+  this.currentPage = 1;
+  this.updatePagination();
+}
 }

@@ -7,6 +7,12 @@
     <!--New product button and batch deletion button: Click to open the corresponding pop-up window-->
     <button class="add-btn" (click)="openModal()">Add New Item</button>
     <button class="delete-all-btn" (click)="openBulkDeleteModal()">Batch Delete Selected</button>
+    <button 
+    class="popular-btn" 
+    (click)="togglePopular()"
+    [class.active]="showOnlyPopular">
+    {{ showOnlyPopular ? 'Show All Items' : 'Show Popular Only' }}
+    </button>
   </td>
 </div>
 
