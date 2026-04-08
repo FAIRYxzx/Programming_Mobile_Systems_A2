@@ -1,0 +1,127 @@
+<!--Main Title of Inventory Management Page-->
+<h2 class="page-title">Inventory Management</h2>
+
+<!-- Top button bar: Includes the "Add" and "Batch Delete" buttons） -->
+<div class="top-bar">
+  <td class="action-buttons">
+    <!--New product button and batch deletion button: Click to open the corresponding pop-up window-->
+    <button class="add-btn" (click)="openModal()">Add New Item</button>
+    <button class="delete-all-btn" (click)="openBulkDeleteModal()">Batch Delete Selected</button>
+  </td>
+</div>
+
+<!-- Product table container -->
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <!--Check box column: Used for batch selection-->
+        <th></th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <!--Sortable columns: Quantity (Click to trigger sorting, display sorting status and icon)-->
+        <th class="sortable" [class.active-sort]="isSortActive('quantity')" (click)="sortColumn('quantity')">Quantity {{ getSortIcon('quantity') }}</th>
+        <!--Sortable column: Price-->
+        <th class="sortable" [class.active-sort]="isSortActive('price')" (click)="sortColumn('price')">Price {{ getSortIcon('price') }}</th>
+        <!--Sortable column: Stock Status-->
+        <th class="sortable" [class.active-sort]="isSortActive('stockStatus')" (click)="sortColumn('stockStatus')">Stock {{ getSortIcon('stockStatus') }}</th>
+        <!--Sortable column: Popular-->
+        <th class="sortable" [class.active-sort]="isSortActive('popular')" (click)="sortColumn('popular')">Popular {{ getSortIcon('popular') }}</th>
+        <th>Comment</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--Display the list of products after the pagination has been performed in a loop -->
+      <tr *ngFor="let item of paginatedItems">
+        <!--Check box: Bidirectional binding of the selected status of the goods -->
+        <td><input type="checkbox" [(ngModel)]="item.selected"></td>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.quantity }}</td>
+        <!--Price formatting: Keep 2 decimal places-->
+        <td>${{ item.price.toFixed(2) }}</td>
+        <td>{{ item.stockStatus }}</td>
+        <td>{{ item.popular }}</td>
+        <td>{{ item.comment }}</td>
+        <!--Column of Actions: Edit/Delete Buttons-->
+        <td class="action-cell">
+            <button class="edit-btn" (click)="openModal(item)">Edit</button>
+            <button class="delete-btn" (click)="openDeleteModal(item)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Paging container: Centered display -->
+<div class="pagination-wrapper">
+  <div class="pagination" *ngIf="totalPages() > 1">
+    <!--Go to the first page: Disabled when the current page is 1-->
+    <button (click)="goToPage(1)" [disabled]="currentPage === 1">First</button>
+    <!--Previous page: Disable when the current page is 1-->
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">←</button>
+    <!--Page number input box: Press Enter to jump to the next page.-->
+    <input 
+      type="number" 
+      placeholder="Page" 
+      (keyup.enter)="goToPageInput($event)"
+      class="page-input"
+      min="1"
+      [max]="totalPages()"
+    >
+    <!--Page number information: Current page / Total pages-->
+    <span>Page {{ currentPage }} / {{ totalPages() }}</span>
+    <!--Next page: Disable when this is the last page-->
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages()">→</button>
+    <!--Go to the last page: Disable when the current page is the last page.-->
+    <button (click)="goToPage(totalPages())" [disabled]="currentPage === totalPages()">Last</button>
+  </div>
+</div>
+
+<!--  Add/Edit Pop-up Window -->
+<div class="modal-backdrop" *ngIf="modalVisible" (click)="closeModal()"></div>
+<div class="modal" *ngIf="modalVisible">
+  <div class="modal-header">
+    <h3>{{ modalTitle }}</h3>
+    <span class="close" (click)="closeModal()">×</span>
+  </div>
+  <div class="modal-body">
+    <!--Form control: Bidirectional binding of the current edited/newly added product information-->
+    <input [(ngModel)]="currentItem.id" placeholder="ID" required>
+    <input [(ngModel)]="currentItem.name" placeholder="Item Name" required>
+    <input [(ngModel)]="currentItem.category" placeholder="Category">
+    <input [(ngModel)]="currentItem.quantity" type="number" placeholder="Quantity">
+    <input [(ngModel)]="currentItem.price" type="number" placeholder="Price">
+    <input [(ngModel)]="currentItem.supplier" placeholder="Supplier">
+    <input [(ngModel)]="currentItem.stockStatus" placeholder="Stock Status">
+    <select [(ngModel)]="currentItem.popular">
+      <option value="Yes">Yes - Popular</option>
+      <option value="No">No - Not Popular</option>
+    </select>
+    <input [(ngModel)]="currentItem.comment" placeholder="Comment">
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeModal()">Cancel</button>
+    <button class="save-btn" (click)="saveItem()">Save</button>
+  </div>
+</div>
+
+<!-- Delete Confirmation Dialog  -->
+<div class="modal-backdrop" *ngIf="deleteModalVisible" (click)="closeDeleteModal()"></div>
+<div class="modal delete-modal" *ngIf="deleteModalVisible">
+  <h3>Confirm Deletion</h3>
+  <p *ngIf="!isBulkDelete">Are you sure you want to delete: <strong>{{ deleteTargetItem?.name }}</strong>?</p>
+  <p *ngIf="isBulkDelete">Are you sure you want to delete all selected items?</p>
+  <div class="modal-footer">
+    <button (click)="closeDeleteModal()">Cancel</button>
+    <button class="delete-confirm-btn" (click)="confirmDelete()">Confirm Delete</button>
+  </div>
+</div>
+
+<!-- Global prompt box: Centered display, different styles are shown according to the type -->
+<div class="toast-center" [class.success]="toastType==='success'" [class.error]="toastType==='error'" *ngIf="toastVisible">
+  {{ toastMessage }}
+</div>

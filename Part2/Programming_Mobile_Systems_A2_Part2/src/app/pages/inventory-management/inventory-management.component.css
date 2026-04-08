@@ -1,0 +1,203 @@
+/*Page Title Style*/
+.page-title {
+  font-size: 24px;
+  color: #001529;
+  margin-bottom: 1rem;
+}
+
+/* Top button bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+/*Operation button container*/
+.action-buttons {
+  display: flex;
+  gap: 0.8rem;
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+}
+
+/* "Add/Batch Delete Button" */
+.add-btn, .delete-all-btn {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/*Add button style*/
+.add-btn {
+  background: #1890ff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/*Batch deletion button style*/
+.delete-all-btn {
+  background: #ff4d4f;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/*Table container*/
+.table-container {
+  overflow-x: auto;
+}
+
+/*Table format*/
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+/*Cell base style*/
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.7rem;
+  text-align: left;
+}
+
+/*Header style*/
+th {
+  background: #a4adb7;
+  color: white;
+}
+
+/* Sortable table header style */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.sortable:hover,
+.sortable.active-sort {
+  background: #1890ff !important;
+}
+
+/* Action column: Forced to be horizontally arranged, with fixed spacing, to prevent line breaks */
+.action-cell {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  white-space: nowrap !important;
+}
+
+/*Button styles for editing and deleting*/
+.edit-btn, .delete-btn {
+  width: 70px;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.edit-btn { background: #1890ff; color: white; }
+.delete-btn { background: #ff4d4f; color: white; }
+
+/* Popup window style */
+.modal-backdrop {
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+.modal {
+  position: fixed; top:50%; left:50%;
+  transform: translate(-50%, -50%);
+  background: white; padding:1.5rem; border-radius:8px;
+  z-index: 100; width:90%; max-width:500px;
+}
+.modal-header {
+  display: flex; justify-content: space-between;
+  margin-bottom: 1rem; align-items: center;
+}
+.close { font-size:22px; cursor:pointer; }
+.modal-body {
+  display: flex; flex-direction: column;
+  gap: 0.6rem; margin-bottom:1rem;
+}
+.modal-body input, .modal-body select {
+  padding: 0.5rem; border:1px solid #ddd; border-radius:4px;
+}
+.modal-footer {
+  display: flex; justify-content: flex-end; gap:0.6rem;
+}
+.save-btn {
+  background:#001529; color:white; border:none;
+  padding:0.5rem 1rem; border-radius:4px; cursor:pointer;
+}
+
+/* 删除弹窗 */
+.delete-modal {
+  max-width: 420px;
+  text-align: center;
+}
+.delete-confirm-btn {
+  background: #ff4d4f; color: white;
+  border: none; padding: 0.5rem 1.2rem;
+  border-radius: 4px; cursor: pointer;
+}
+
+/* Paging container: Centered display */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+/*Paging control: Arranged horizontally, centered alignment.*/
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pagination button:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  color: #999;
+}
+.pagination span {
+  font-weight: 500;
+  color: #001529;
+}
+.page-input {
+  width: 50px;
+  padding: 0.4rem;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Global prompt box: Centered display, high priority level */
+.toast-center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.8rem 1.2rem;
+  border-radius: 4px;
+  color: white;
+  z-index: 9999;
+}
+.toast-center.success { background:#00b578; }
+.toast-center.error { background:#ff4d4f; }
